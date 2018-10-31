@@ -7,11 +7,12 @@ import colors from 'colors';
 import ip from 'my-local-ip';
 import serve from 'koa-static';
 import App from '../shared/App';
+import Api from './crud/api.js';
 import Router from 'koa-router';
 import fetch from 'isomorphic-fetch';
+import bodyParser from 'koa-bodyparser';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter, matchPath } from 'react-router-dom';
-import { caloriesCRUD, distanceCRUD, watchCRUD } from './api';
 
 const port = 5000;
 const app = new Koa();
@@ -21,67 +22,17 @@ const template = fs.readFileSync(filepath).toString();
 
 // initial setup
 app.use(cors());
+app.use(bodyParser());
 app.use(serve('build'));
 
+// setup API
+Api.init(router);
+
+// map all remaining routes to front-end application
 let last = new Date();
 let routeData;
 let routes = [];
 
-// handle calorie-related API routes
-router
-  .post('/api/v1/caloriesburned', (ctx, next) => {
-    ctx.body = { ok: false, msg: "ERROR: not yet implemented" };
-  })
-  .get('/api/v1/caloriesburned', (ctx, next) => {
-    ctx.body = caloriesCRUD.read(-1, true);
-  })
-  .get('/api/v1/caloriesburned/:id', (ctx, next) => {
-    ctx.body = { ok: false, msg: "ERROR: not yet implemented" };
-  })
-  .put('/api/v1/caloriesburned/:id', (ctx, next) => {
-    ctx.body = { ok: false, msg: "ERROR: not yet implemented" };
-  })
-  .del('/api/v1/caloriesburned/:id', (ctx, next) => {
-    ctx.body = { ok: false, msg: "ERROR: not yet implemented" };
-  });
-
-// handle distance-related API routes
-router
-  .post('/api/v1/distance', (ctx, next) => {
-    ctx.body = { ok: false, msg: "ERROR: not yet implemented" };
-  })
-  .get('/api/v1/distance', (ctx, next) => {
-    ctx.body = distanceCRUD.read(-1, true);
-  })
-  .get('/api/v1/distance/:id', (ctx, next) => {
-    ctx.body = { ok: false, msg: "ERROR: not yet implemented" };
-  })
-  .put('/api/v1/distance/:id', (ctx, next) => {
-    ctx.body = { ok: false, msg: "ERROR: not yet implemented" };
-  })
-  .del('/api/v1/distance/:id', (ctx, next) => {
-    ctx.body = { ok: false, msg: "ERROR: not yet implemented" };
-  });
-
-// handle watch-related API routes
-router
-  .post('/api/v1/streamusage', (ctx, next) => {
-    ctx.body = { ok: false, msg: "ERROR: not yet implemented" };
-  })
-  .get('/api/v1/streamusage', (ctx, next) => {
-    ctx.body = watchCRUD.read(-1, true);
-  })
-  .get('/api/v1/streamusage/:id', (ctx, next) => {
-    ctx.body = { ok: false, msg: "ERROR: not yet implemented" };
-  })
-  .put('/api/v1/streamusage/:id', (ctx, next) => {
-    ctx.body = { ok: false, msg: "ERROR: not yet implemented" };
-  })
-  .del('/api/v1/streamusage/:id', (ctx, next) => {
-    ctx.body = { ok: false, msg: "ERROR: not yet implemented" };
-  });
-
-// map all remaining routes to application
 router.get('*', async (ctx, next) => {
   const now = new Date();
 

@@ -222,8 +222,8 @@ const serverConfig = {
   stats: 'errors-only',
   entry: './src/server/index.js',
   target: 'node',
-  optimization: serverOptimization,
-  // optimization: { minimizer: [] },
+  // optimization: serverOptimization,
+  optimization: { minimizer: [] },
   resolve: {
     alias: aliases,
   },

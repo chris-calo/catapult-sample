@@ -1,7 +1,12 @@
-const dateFactory = ((days = 0) => {
-  let ago = new Date();
-  return new Date(ago.setDate(ago.getDate() - days));
-});
+const dateFactory = (days = 0) => {
+  const ago = new Date();
+
+  // initialize new date to 12:00, for consistency's sake
+  const base = new Date(ago.setDate(ago.getDate() - days));
+  base.setHours(12, 0, 0, 0);
+
+  return base;
+};
 
 const calorieData = {
   title: "Calories Burned",
@@ -107,4 +112,4 @@ const watchData = {
   ],
 };
 
-export { calorieData, distanceData, watchData };
+export { dateFactory, calorieData, distanceData, watchData };
