@@ -6,8 +6,7 @@ import store from 'store';
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import routes from './routes';
 
-import Header from './common/Header.js';
-import Footer from './common/Footer.js';
+import './common/fonts.scss';
 import './common/reset.scss';
 
 if (__isBrowser__) { window.__DATA_LOADED__ = false }

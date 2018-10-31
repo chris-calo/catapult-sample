@@ -1,27 +1,157 @@
 @import './colors.scss';
 
-input[type="text"], textarea {
-  letter-spacing: 2px;
-  outline: none;
-  resize: none;
-  border: none;
-
+a, span, div, p, label {
   font: {
-    family: "Open Sans", sans-serif;
-    size: 18px;
-    weight: 200;
+    family: "Mark", sans-serif;
+    size: 17px;
+    weight: 500;
+  }
+  
+  color: $grey;
+}
+
+a {
+  color: $orange;
+  text-decoration: none !important;
+
+  &.underline {
+    padding: 0 2px 3px 2px;
+    border-width: 0 0 1px 0 !important;
+    border-style: solid !important;
+    border-color: $orange !important;
+    display: inline-block;
+  }
+}
+
+label {
+  color: $black;
+  display: block;
+
+  & + input, & + textarea {
+    margin-top: 10px;
+  }
+}
+
+input[type="text"], input[type="password"], textarea {
+  font: {
+    family: "Mark", sans-serif;
+    size: 17px;
+    weight: 500;
   }
 
+  color: $black;
+  outline: none;
+  resize: none;
+  letter-spacing: 1px;
+  padding-bottom: 8px;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: transparentize($black, 0.6);
+
   &::placeholder {
-    color: transparentize(#989898, 0.3);
+    color: transparentize($black, 0.45);
     opacity: 1;
   }
 
   &:-ms-input-placeholder {
-    color: transparentize(#989898, 0.3);
+    color: transparentize($black, 0.45);
   }
 
   &::-ms-input-placeholder {
-    color: transparentize(#989898, 0.3);
+    color: transparentize($black, 0.45);
+  }
+
+  & + input, & + label, .field-pair {
+    margin-top: 20px;
+  }
+}
+
+.field-pair {
+  & + input, & + label, & + .field-pair {
+    margin-top: 20px;
+  }
+}
+
+input[type="submit"], button {
+  font: {
+    family: "Mark", sans-serif;
+    size: 12px;
+    weight: 500;
+  }
+
+  width: 90% !important;
+  height: 52px;
+  color: $orange;
+  border: 1px solid $orange;
+  transition: 0.25s;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding-top: 5px;
+  margin: 50px auto 0 auto !important;
+  display: block;
+
+  &:hover {
+    color: $white;
+    background: $orange;
+    width: calc(90% + 10px);
+    height: 60px;
+  }
+}
+
+.flash {
+  width: calc(100% - 40px);
+  padding: 20px;
+  margin: 30px 0 -5px 0;
+
+  &.hidden {
+    display: none;
+  }
+
+  &.success {
+    background: $success;
+
+    .attention {
+      color: $white;
+      border: 2px solid $white;
+      border-radius: 50%;
+      padding: 2px 10px;
+      margin-right: 10px;
+    }
+
+    .message {
+      color: transparentize($white, 0.1);
+    }
+  }
+
+  &.error {
+    background: $error;
+
+    .attention {
+      color: $white;
+      border: 2px solid $white;
+      border-radius: 50%;
+      padding: 2px 10px;
+      margin-right: 10px;
+    }
+
+    .message {
+      color: transparentize($white, 0.2);
+    }
+  }
+
+  &.warn {
+    background: $warn;
+
+    .attention {
+      color: transparentize($black, 0.2);
+      border: 2px solid transparentize($black, 0.2);
+      border-radius: 50%;
+      padding: 2px 10px;
+      margin-right: 10px;
+    }
+
+    .message {
+      color: transparentize($black, 0.4);
+    }
   }
 }

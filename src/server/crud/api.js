@@ -1,9 +1,30 @@
+import userCRUD from './user';
 import calorieCRUD from './calorie';
 import distanceCRUD from './distance';
 import watchCRUD from './watch';
 
 const Api = {
   init: (router) => {
+    // handle calorie-related API routes
+    router.post('/api/v1/user', (ctx, next) => {
+        ctx.body = userCRUD.create(ctx.request.body);
+      })
+      .get('/api/v1/user', (ctx, next) => {
+        ctx.body = userCRUD.read(-1, true);
+      })
+      .get('/api/v1/user/:id', (ctx, next) => {
+        const id = parseInt(ctx.params.id)
+        ctx.body = userCRUD.read(id);
+      })
+      .put('/api/v1/user/:id', (ctx, next) => {
+        const id = parseInt(ctx.params.id)
+        ctx.body = userCRUD.update(id, ctx.request.body);
+      })
+      .del('/api/v1/user/:id', (ctx, next) => {
+        const id = parseInt(ctx.params.id)
+        ctx.body = userCRUD.destroy(id);
+      });
+
     // handle calorie-related API routes
     router.post('/api/v1/caloriesburned', (ctx, next) => {
         ctx.body = calorieCRUD.create(ctx.request.body);
