@@ -30,3 +30,11 @@ Features include:
 λ npm i
 λ npm run build && node build/server.js
 ```
+
+## running test suite
+```
+λ git clone https://github.com/chris-calo/catapult-sample.git
+λ cd catapult-sample
+λ npm i
+λ npm test
+```
