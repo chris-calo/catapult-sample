@@ -11,6 +11,10 @@ import {
 // input ex: { daysAgo: 0, calories: 444 }
 const calorieCRUD = {
   validate: (data) => {
+    if (!data || typeof data === 'undefined') {
+      return respondError(`missing data`);
+    }
+
     if (
       !('daysAgo' in data) ||
       data.daysAgo === null ||

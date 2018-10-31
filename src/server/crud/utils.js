@@ -1,5 +1,5 @@
 // helper routine to check if a dynamically-typed variable is a string
-const isString = (s) => {j
+const isString = (s) => {
   return typeof s === 'string' || s instanceof String;
 };
 

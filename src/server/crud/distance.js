@@ -11,6 +11,10 @@ import {
 // input ex: { daysAgo: 0, location: "Boston, MA, USA", meters: 512 }
 const distanceCRUD = {
   validate: (data) => {
+    if (!data || typeof data === 'undefined') {
+      return respondError(`missing data`);
+    }
+
     if (
       !('daysAgo' in data) ||
       data.daysAgo === null ||
@@ -38,7 +42,7 @@ const distanceCRUD = {
     return { ok: true, msg: "OK: valid" };
   },
 
-  create: () => {
+  create: (data) => {
     const { ok, msg } = distanceCRUD.validate(data);
     if (!ok) { return respondError(msg); }
 

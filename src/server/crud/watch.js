@@ -11,6 +11,10 @@ import {
 // input ex: { location: "Boston, MA, USA", usageMS: 1000, ttfbMS: 30 }
 const watchCRUD = {
   validate: (data) => {
+    if (!data || typeof data === 'undefined') {
+      return respondError(`missing data`);
+    }
+
     if (
       !('location' in data) ||
       data.location === null ||
@@ -56,10 +60,10 @@ const watchCRUD = {
     }
 
     // if non-existent, insert
-    const len = calorieData.data.push([
+    const len = watchData.data.push([
       data.location,
       data.usageMS,
-      ddata.ttfbMS,
+      data.ttfbMS,
     ]);
     const newID = len - 1;
 
