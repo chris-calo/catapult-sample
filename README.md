@@ -1,6 +1,10 @@
 # Catapult Sample
 
-Technical sample, requested by Hari Namduri
+Technical sample, requested by Hari Namduri.
+
+When run, features a full-fledges HTTP server and REST API. Allows for
+end-user to register, login, and view some relative, albeit extemely
+simplistic, video and health metrics.
 
 Features include:
 
@@ -8,6 +12,7 @@ Features include:
 - [ ] Dev React with production Preact for performance
 - [ ] Full-stack app created in JS
 - [x] Decoupled API on back-end in ES6+ with Koa
+- [x] Exhibits good programming practices in modern JavaScript
 - [x] 3 unique data structures, with flexible, custom graphing
 - [x] Test suite (Jest) with near 100% coverage
 - [x] Minimal production dependencies
