@@ -37,11 +37,6 @@ const calorieData = {
     [ dateFactory(7),   430 ],
     [ dateFactory(6),   650 ],
     [ dateFactory(5),   500 ],
-    [ dateFactory(4),   600 ],
-    [ dateFactory(3),   560 ],
-    [ dateFactory(2),   450 ],
-    [ dateFactory(1),   665 ],
-    [ dateFactory(0),   380 ],
   ]
 };
 
@@ -86,10 +81,6 @@ const distanceData = {
     [ dateFactory(7),   "Irvine, CA, USA",          650 ],
     [ dateFactory(6),   "Portland, OR, USA",        500 ],
     [ dateFactory(5),   "Miami, FL, USA",           600 ],
-    [ dateFactory(4),   "Moscow, RU",               560 ],
-    [ dateFactory(2),   "London, UK",               450 ],
-    [ dateFactory(1),   "Paris, FR",                665 ],
-    [ dateFactory(0),   "Tokyo, JP",                380 ],
   ]
 };
 

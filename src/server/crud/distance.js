@@ -11,19 +11,31 @@ import {
 // input ex: { daysAgo: 0, location: "Boston, MA, USA", meters: 512 }
 const distanceCRUD = {
   validate: (data) => {
-    if (!('daysAgo' in data) || isNaN(data.daysAgo)) {
+    if (
+      !('daysAgo' in data) ||
+      data.daysAgo === null ||
+      isNaN(data.daysAgo)
+    ) {
       return respondError(`invalid 'daysAgo' value "${data.daysAgo}"`);
     }
 
-    if (!('location' in data) || !isString(data.location)) {
+    if (
+      !('location' in data) ||
+      data.location === null ||
+      !isString(data.location)
+    ) {
       return respondError(`invalid 'location' value "${data.location}"`);
     }
 
-    if (!('meters' in data) || isNaN(data.meters)) {
+    if (
+      !('meters' in data) ||
+      data.meters === null ||
+      isNaN(data.meters)
+    ) {
       return respondError(`invalid 'meters' value "${data.meters}"`);
     }
 
-    return { ok: true };
+    return { ok: true, msg: "OK: valid" };
   },
 
   create: () => {
@@ -38,7 +50,7 @@ const distanceCRUD = {
 
     if (daysAgoIndex > -1) {
       return respondError(
-        `failed to create; rows with daysAgo value "${data.daysAgo}" ` +
+        `failed to create; row with daysAgo value "${data.daysAgo}" ` +
         `already exists at index "${daysAgoIndex}"`
       );
     }
@@ -88,8 +100,11 @@ const distanceCRUD = {
   },
 
   update: (id = -1, data) => {
-    const { ok, msg } = readCheck(distanceData, id);
+    const { ok, msg } = distanceCRUD.validate(data);
     if (!ok) { return respondError(msg); }
+
+    const read = readCheck(distanceData, id);
+    if (!read.ok) { return respondError(read.msg); }
 
     distanceData.data[id] = [
       dateFactory(data.daysAgo),

@@ -11,15 +11,15 @@ const serverTimestamp = () => {
 // generic error handler
 const respondError = (msg = "invalid request") => {
   return {
-    ok: false,
-    msg: `ERROR: ${msg}`,
+    ok: false, 
+    msg: `ERROR: ${msg.replace("ERROR: ", "")}`, // prevent label duplicate
     servertime: serverTimestamp(),
   }
 };
 
 // checks if requested value exists, prior to further operations
 const readCheck = (store, id) => {
-  if (isNaN(id) ||  id < 0 || id > store.data.length - 1) {
+  if (id === null || isNaN(id) ||  id < 0 || id > store.data.length - 1) {
     return respondError(`item with ID "${id}" does not exist`);
   }
 

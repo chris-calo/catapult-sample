@@ -11,15 +11,23 @@ import {
 // input ex: { daysAgo: 0, calories: 444 }
 const calorieCRUD = {
   validate: (data) => {
-    if (!('daysAgo' in data) || isNaN(data.daysAgo)) {
+    if (
+      !('daysAgo' in data) ||
+      data.daysAgo === null ||
+      isNaN(data.daysAgo)
+    ) {
       return respondError(`invalid 'daysAgo' value "${data.daysAgo}"`);
     }
 
-    if (!('calories' in data) || isNaN(data.calories)) {
+    if (
+      !('calories' in data) ||
+      data.calories === null ||
+      isNaN(data.calories)
+    ) {
       return respondError(`invalid 'calories' value "${data.calories}"`);
     }
 
-    return { ok: true };
+    return { ok: true, msg: "OK: valid" };
   },
 
   create: (data) => {
@@ -34,7 +42,7 @@ const calorieCRUD = {
 
     if (daysAgoIndex > -1) {
       return respondError(
-        `failed to create; rows with daysAgo value "${data.daysAgo}" ` +
+        `failed to create; row with daysAgo value "${data.daysAgo}" ` +
         `already exists at index "${daysAgoIndex}"`
       );
     }
@@ -86,12 +94,15 @@ const calorieCRUD = {
 
   // ignores daysAgo on update
   update: (id = -1, data) => {
-    const { ok, msg } = readCheck(calorieData, id);
+    const { ok, msg } = calorieCRUD.validate(data);
     if (!ok) { return respondError(msg); }
+
+    const read = readCheck(calorieData, id);
+    if (!read.ok) { return respondError(read.msg); }
 
     calorieData.data[id] = [
       dateFactory(data.daysAgo),
-      calories,
+      data.calories,
     ];
 
     return {

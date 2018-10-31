@@ -11,19 +11,31 @@ import {
 // input ex: { location: "Boston, MA, USA", usageMS: 1000, ttfbMS: 30 }
 const watchCRUD = {
   validate: (data) => {
-    if (!('location' in data) || !isString(data.location)) {
+    if (
+      !('location' in data) ||
+      data.location === null ||
+      !isString(data.location)
+    ) {
       return respondError(`invalid 'location' value "${data.location}"`);
     }
 
-    if (!('usageMS' in data) || isNaN(data.usageMS)) {
+    if (
+      !('usageMS' in data) ||
+      data.usageMS === null ||
+      isNaN(data.usageMS)
+    ) {
       return respondError(`invalid 'usageMS' value "${data.usageMS}"`);
     }
 
-    if (!('ttfbMS' in data) || isNaN(data.ttfbMS)) {
+    if (
+      !('ttfbMS' in data) ||
+      data.ttfbMS === null ||
+      isNaN(data.ttfbMS)
+    ) {
       return respondError(`invalid 'ttfbMS' value "${data.ttfbMS}"`);
     }
 
-    return { ok: true };
+    return { ok: true, msg: "OK: valid" };
   },
 
   create: (data) => {
@@ -38,7 +50,7 @@ const watchCRUD = {
 
     if (locationIndex > -1) {
       return respondError(
-        `failed to create; rows with location value "${data.location}" ` +
+        `failed to create; row with location value "${data.location}" ` +
         `already exists at index "${locationIndex}"`
       );
     }
@@ -88,8 +100,11 @@ const watchCRUD = {
   },
 
   update: (id = -1, data) => {
-    const { ok, msg } = readCheck(watchData, id);
+    const { ok, msg } = watchCRUD.validate(data);
     if (!ok) { return respondError(msg); }
+
+    const read = readCheck(watchData, id);
+    if (!read.ok) { return respondError(read.msg); }
 
     watchData.data[id] = [
       data.location,
