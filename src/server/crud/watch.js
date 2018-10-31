@@ -29,6 +29,38 @@ const watchCRUD = {
   create: (data) => {
     const { ok, msg } = watchCRUD.validate(data);
     if (!ok) { return respondError(msg); }
+
+    // check if location value exists
+    const location = data.location;
+    const locationIndex = watchData.data.findIndex(data =>
+      data[0] === location
+    );
+
+    if (locationIndex > -1) {
+      return respondError(
+        `failed to create; rows with location value "${data.location}" ` +
+        `already exists at index "${locationIndex}"`
+      );
+    }
+
+    // if non-existent, insert
+    const len = calorieData.data.push([
+      data.location,
+      data.usageMS,
+      ddata.ttfbMS,
+    ]);
+    const newID = len - 1;
+
+    // respond with new value information and OK status
+    return {
+      title: watchData.title,
+      data: [
+        watchData.data[newID],
+      ],
+      ok: true,
+      msg: `OK: inserted row with ID ${newID}`,
+      servertime: serverTimestamp(),
+    };
   },
 
   read: (id = -1, all = false) => {
@@ -59,10 +91,21 @@ const watchCRUD = {
     const { ok, msg } = readCheck(watchData, id);
     if (!ok) { return respondError(msg); }
 
-    calorieData.data[id] = [
-      dateFactory(data.daysAgo),
-      data.calories,
+    watchData.data[id] = [
+      data.location,
+      data.usageMS,
+      data.ttfbMS,
     ];
+
+    return {
+      title: watchData.title,
+      data: [
+        watchData.data[id],
+      ],
+      ok: true,
+      msg: `OK: row "${id}" updated`,
+      servertime: serverTimestamp(),
+    };
   },
 
   destroy: (id = -1) => {

@@ -29,6 +29,38 @@ const distanceCRUD = {
   create: () => {
     const { ok, msg } = distanceCRUD.validate(data);
     if (!ok) { return respondError(msg); }
+
+    // check if daysAgo value exists
+    const daysAgo = dateFactory(data.daysAgo);
+    const daysAgoIndex = distanceData.data.findIndex(data =>
+      data[0].toString() === daysAgo.toString()
+    );
+
+    if (daysAgoIndex > -1) {
+      return respondError(
+        `failed to create; rows with daysAgo value "${data.daysAgo}" ` +
+        `already exists at index "${daysAgoIndex}"`
+      );
+    }
+
+    // if non-existent, insert
+    const len = distanceData.data.push([
+      dateFactory(data.daysAgo),
+      data.location,
+      data.meters,
+    ]);
+    const newID = len - 1;
+
+    // respond with new value information and OK status
+    return {
+      title: distanceData.title,
+      data: [
+        distanceData.data[newID],
+      ],
+      ok: true,
+      msg: `OK: inserted row with ID ${newID}`,
+      servertime: serverTimestamp(),
+    };
   },
 
   read: (id = -1, all = false) => {
@@ -59,10 +91,21 @@ const distanceCRUD = {
     const { ok, msg } = readCheck(distanceData, id);
     if (!ok) { return respondError(msg); }
 
-    calorieData.data[id] = [
+    distanceData.data[id] = [
       dateFactory(data.daysAgo),
-      data.calories,
+      data.location,
+      data.meters,
     ];
+
+    return {
+      title: distanceData.title,
+      data: [
+        distanceData.data[id],
+      ],
+      ok: true,
+      msg: `OK: row "${id}" updated`,
+      servertime: serverTimestamp(),
+    };
   },
 
   destroy: (id = -1) => {

@@ -99,16 +99,16 @@ const watchData = {
       "Locations",           "Total usage",   "Average TTFB"
   ],
   data: [
-    [ "Boston, MA, USA",        "86:14:31",               30 ],
-    [ "Berlin, DE",             "56:07:16",               61 ],
-    [ "Toronto, CA, USA",       "51:41:42",               44 ],
-    [ "Irvine, CA, USA",        "50:16:17",               39 ],
-    [ "Portland, OR, USA",      "50:04:11",               22 ],
-    [ "Miami, FL, USA",         "46:19:24",               58 ],
-    [ "Moscow, RU,",            "44:36:19",               70 ],
-    [ "Dublin, IRE",            "32:22:49",               38 ],
-    [ "Cape Town, ZA",          "31:14:21",               47 ],
-    [ "El Paso, TX, USA",       "29:56:28",               61 ],
+    [ "Boston, MA, USA",        480234123,                30 ],
+    [ "Berlin, DE",             543411398,                61 ],
+    [ "Toronto, CA, USA",       123587612,                44 ],
+    [ "Irvine, CA, USA",        823451994,                39 ],
+    [ "Portland, OR, USA",       12388349,                22 ],
+    [ "Miami, FL, USA",         123987724,                58 ],
+    [ "Moscow, RU,",              1238760,                70 ],
+    [ "Dublin, IRE",             98734183,                38 ],
+    [ "Cape Town, ZA",              72895,                47 ],
+    [ "El Paso, TX, USA",         4789863,                61 ],
   ],
 };
 
