@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import './Header.scss';
+import './header.scss';
 
 class Header extends React.Component {
   render() {

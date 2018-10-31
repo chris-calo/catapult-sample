@@ -29,27 +29,10 @@ class App extends React.Component {
   }
 
   render() {
-    if (
-      this.state.routes.length < 1 &&
-      (
-        this.props == null ||
-        this.props.routes == null ||
-        this.props.routes.length < 1
-      )
-    ) {
-      return null;
-    }
-
-    const routes = this.props.routes || this.state.routes;
     const routeMarkup = routes.map(route => {
-      const path = route.route[0]==='/' ? route.route : `/${route.route}`;
-
       return (
-        <Route key={route.route} path={path} exact={true}
-        render={() => {
-          // components go here
-          return null;
-        }} />
+        <Route key={route.path} path={route.path} exact={route.exact}
+        component={route.component} />
       );
     });
 
