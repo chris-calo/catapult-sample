@@ -1,1 +1,210 @@
 @import 'base';
+
+.header {
+  background: $white;
+  width: 320px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+
+  .logo-container {
+    width: 100%;
+    padding: 40px 0 48px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: transparentize($grey, 0.92);
+  }
+
+  .logo {
+    background-image: url('./images/catapult-logomark.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 101px * 0.8;
+    height: 110px * 0.8;
+    display: block;
+  }
+
+  .dropshadow {
+    background: transparentize($grey, 0.99);
+    width: 5px;
+    height: 100vh;
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: -5px;
+  }
+
+  .nav {
+    width: 100%;
+    padding: 60px 0;
+  }
+
+  .nav a {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    &:nth-child(n+2) {
+      margin-top: 20px;
+    }
+  }
+
+  .nav a.active .activity-indicator {
+    background: $blue;
+    width: 2px;
+    height: 100%;
+    display: inline-block;
+  }
+
+  .nav a .label {
+    letter-spacing: 1px;
+    display: inline-block;
+    margin-left: 70px;
+  }
+
+  .nav a.active .label {
+    margin-left: 68px;
+  }
+
+  .nav .label {
+    width: calc(100% - 2px);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .nav a .label .name {
+    font: {
+      family: "Mark", sans-serif;
+      size: 14px;
+      weight: 700;
+    }
+
+    color: transparentize($grey, 0.1);
+    display: inline-block;
+    margin-left: 20px;
+  }
+
+  .nav a.active .label .name {
+    color: $blue;
+  }
+
+  a.athlete {
+    .icon {
+      background-image: url('./images/icon-athlete-inactive.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 48px * 0.75;
+      height: 42px * 0.75;
+      display: inline-block;
+      margin-bottom: -9px;
+      opacity: 0.65;
+    }
+
+    &.active .icon {
+      background-image: url('./images/icon-athlete-active.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 48px * 0.75;
+      height: 42px * 0.75;
+      display: inline-block;
+      margin-bottom: -9px;
+      opacity: 0.65;
+    }
+  }
+
+  a.workout {
+    .icon {
+      background-image: url('./images/icon-workout-inactive.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 48px * 0.75;
+      height: 42px * 0.75;
+      display: inline-block;
+      margin-bottom: -10px;
+      opacity: 0.65;
+    }
+
+    &.active .icon {
+      background-image: url('./images/icon-workout-active.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 48px * 0.75;
+      height: 42px * 0.75;
+      display: inline-block;
+      margin-bottom: -10px;
+      opacity: 0.65;
+    }
+  }
+
+  a.stream {
+    .icon {
+      background-image: url('./images/icon-stream-inactive.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 48px * 0.75;
+      height: 42px * 0.75;
+      display: inline-block;
+      margin-bottom: -7px;
+      opacity: 0.65;
+    }
+
+    &.active .icon {
+      background-image: url('./images/icon-stream-active.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 48px * 0.75;
+      height: 42px * 0.75;
+      display: inline-block;
+      margin-bottom: -7px;
+      opacity: 0.65;
+    }
+  }
+
+  .profile {
+    width: 100%;
+    height: 120px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 0;
+    border-width: 5px 0 0 0;
+    border-style: solid;
+    border-color: transparentize($grey, 0.97);
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    .name {
+      font: {
+        family: "Mark", sans-serif;
+        size: 18px;
+        weight: 800;
+      }
+
+      letter-spacing: 2px;
+    }
+
+    .platform {
+      font: {
+        family: "Mark", sans-serif;
+        size: 14px;
+        weight: 500;
+      }
+
+      color: transparentize($grey, 0.4);
+      letter-spacing: 1px;
+      margin-top: 3px;
+    }
+  }
+}

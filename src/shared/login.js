@@ -60,10 +60,15 @@ class Login extends React.Component {
       if (result.ok) {
         if (__isBrowser__) {
           const data = result.data[0];
+
+          const firstName = data.firstName;
+          const lastName = data.lastName;
           const email = data.email;
           const token = data.token;
 
           store.set('session', {
+            firstName: firstName,
+            lastName: lastName,
             email: email,
             token: token,
           });

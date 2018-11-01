@@ -43,8 +43,6 @@ const userOps = {
     userOps.data[emailIndex] = temp;
 
     const result = deepCopyObj(userOps.data[emailIndex]);
-    delete result.firstName;
-    delete result.lastName;
     delete result.hash;
 
     return {
@@ -88,8 +86,6 @@ const userOps = {
     userOps.data[emailIndex] = temp;
 
     const result = deepCopyObj(userOps.data[emailIndex]);
-    delete result.firstName;
-    delete result.lastName;
     delete result.hash;
 
     return {

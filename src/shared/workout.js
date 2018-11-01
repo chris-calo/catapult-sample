@@ -4,9 +4,9 @@ import Header from './common/header';
 import Footer from './common/footer';
 import { withRouter, Link } from 'react-router-dom';
 import { post } from './common/api';
-import './stream.scss';
+import './workout.scss';
 
-class Stream extends React.Component {
+class Workout extends React.Component {
   componentDidMount() {
     const session = store.get('session');
     const redirect = () => this.props.history.replace('/login');
@@ -32,7 +32,7 @@ class Stream extends React.Component {
 
   render() {
     return (
-      <div className="stream-view">
+      <div className="workout-view">
         <Header />
         <div className="view-container">
         </div>
@@ -42,4 +42,4 @@ class Stream extends React.Component {
   }
 }
 
-export default withRouter(props => <Stream {...props} />);
+export default withRouter(props => <Workout {...props} />);

@@ -3,6 +3,7 @@ import fetch from 'isomorphic-fetch';
 import Login from './login';
 import Register from './register';
 import Athlete from './athlete';
+import Workout from './workout';
 import Stream from './stream';
 
 const routes = [
@@ -28,6 +29,12 @@ const routes = [
     path: '/athlete',
     exact: true,
     component: Athlete,
+    private: true,
+  },
+  {
+    path: '/workout',
+    exact: true,
+    component: Workout,
     private: true,
   },
   {
