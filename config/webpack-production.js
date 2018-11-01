@@ -192,8 +192,8 @@ const browserConfig = {
   mode: mode,
   stats: 'errors-only',
   entry: './src/browser/index.js',
-  optimization: browserOptimization,
-  // optimization: { minimizer: [] },
+  // optimization: browserOptimization,
+  optimization: { minimizer: [] },
   resolve: {
     alias: aliases,
   },

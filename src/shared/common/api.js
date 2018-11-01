@@ -1,16 +1,24 @@
 const post = (dest, obj) => {
   return new Promise(resolve => {
     const xhr = new XMLHttpRequest();
-    const params = obj.entries().map(p => `${p[0]}=${p[1]}`).join('&');
+
+    /*
+    const params = Object.entries(obj).map(p => {
+      return `${p[0]}=${p[1]}`;
+    }).join('&');
+
+    console.log(`params : "${params}"`);
+    */
 
     xhr.onload = () => {
       const response = xhr.responseText;
-      console.log(`INFO: response === "${response}"`);
+      console.log(`TRACE: response === "${response}"`);
       resolve(JSON.parse(response));
     };
 
-    xhr.open('POST', `${dest}?${params}`);
-    xhr.send();
+    xhr.open('POST', dest);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(obj));
   });
 };
 
@@ -20,7 +28,7 @@ const get = (dest) => {
 
     xhr.onload = () => {
       const response = xhr.responseText;
-      console.log(`INFO: response === "${response}"`);
+      console.log(`TRACE: response === "${response}"`);
       resolve(JSON.parse(response));
     };
 
@@ -35,7 +43,7 @@ const put = (dest) => {
 
     xhr.onload = () => {
       const response = xhr.responseText;
-      console.log(`INFO: response === "${response}"`);
+      console.log(`TRACE: response === "${response}"`);
       resolve(JSON.parse(response));
     };
 
@@ -50,7 +58,7 @@ const del = (dest) => {
 
     xhr.onload = () => {
       const response = xhr.responseText;
-      console.log(`INFO: response === "${response}"`);
+      console.log(`TRACE: response === "${response}"`);
       resolve(JSON.parse(response));
     };
 

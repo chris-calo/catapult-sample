@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { post } from './common/api';
 import './register.scss';
 
 class Register extends React.Component {
@@ -49,12 +50,24 @@ class Register extends React.Component {
       return;
     }
 
-    const inputData = {
+    const request = {
       firstName: firstName,
       lastName: lastName,
       email: email,
       password: password,
     };
+
+    post('/api/v1/user', request).then(result => {
+      if (result.ok) {
+        if (__isBrowser__) {
+          window.__REGISTER_SUCCESS__ = true;
+        }
+
+        this.props.history.push('/login');
+      } else {
+        this.showFlash(result.msg.replace('ERROR: ', ''), 'error');
+      }
+    });
   }
 
   render() {
@@ -102,5 +115,5 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+export default withRouter(props => <Register {...props} />);
 

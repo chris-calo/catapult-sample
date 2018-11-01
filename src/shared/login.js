@@ -1,7 +1,7 @@
 import React from 'react';
 import emailValidator from 'email-validator';
-import { Link } from 'react-router-dom';
-import { get } from './common/api';
+import { Link, withRouter } from 'react-router-dom';
+import { post } from './common/api';
 import './login.scss';
 
 // TODO: make flash a class and state-machine for ease of modification
@@ -50,7 +50,12 @@ class Login extends React.Component {
       return;
     }
 
-    get('/api/v1/caloriesburned').then(result => {
+    const request = {
+      email: email,
+      password: password,
+    };
+
+    post('/api/v1/user/login', request).then(result => {
       console.log(JSON.stringify(result));
     });
   }
@@ -91,4 +96,4 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+export default withRouter(props => <Login {...props} />);
