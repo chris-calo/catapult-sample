@@ -1,4 +1,5 @@
 import React from 'react';
+import store from 'store';
 import emailValidator from 'email-validator';
 import { Link, withRouter } from 'react-router-dom';
 import { post } from './common/api';
@@ -56,7 +57,22 @@ class Login extends React.Component {
     };
 
     post('/api/v1/user/login', request).then(result => {
-      console.log(JSON.stringify(result));
+      if (result.ok) {
+        if (__isBrowser__) {
+          const data = result.data[0];
+          const email = data.email;
+          const token = data.token;
+
+          store.set('session', {
+            email: email,
+            token: token,
+          });
+        }
+
+        this.props.history.push('/athlete');
+      } else {
+        this.showFlash(result.msg.replace('ERROR: ', ''), 'error');
+      }
     });
   }
 

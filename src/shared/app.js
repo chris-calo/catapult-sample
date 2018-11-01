@@ -4,6 +4,7 @@ import React from 'react';
 import store from 'store';
 
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
+import { post } from './common/api';
 import routes from './routes';
 
 import './common/fonts.scss';
@@ -23,12 +24,54 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      routes: [],
+      auth: false,
     };
+  }
+
+  componentDidMount() {
+    const session = store.get('session');
+
+    if (!session || typeof session === 'undefined') return;
+    if (!session.email || `${session.email}`.length < 1) return;
+    if (!session.token || `${session.email}`.token < 1) return;
+
+    const request = { email: session.email, token: session.token };
+    post('/api/v1/user/validate', request).then(result => {
+      if (!result.ok) store.remove('session');
+      this.setState({ auth: result.ok })
+    });
   }
 
   render() {
     const routeMarkup = routes.map(route => {
+      if (route.private && !this.state.auth) {
+        return <Route key={route.path} path={route.path}
+        exact={route.exact} render={() => {
+          const session = store.get('session');
+
+          if (!session || typeof session === 'undefined') {
+            return <Redirect to="/login" />
+          };
+
+          if (!session.email || `${session.email}`.length < 1) {
+            return <Redirect to="/login" />
+          };
+
+          if (!session.token || `${session.email}`.token < 1) {
+            return <Redirect to="/login" />
+          };
+
+          const request = { email: session.email, token: session.token };
+          post('/api/v1/user/validate', request).then(result => {
+            if (result && result.ok) {
+              return <route.component />
+            } else {
+              return <Redirect to="/login" />
+            }
+          });
+        }} />
+      }
+
       return (
         <Route key={route.path} path={route.path} exact={route.exact}
         component={route.component} />

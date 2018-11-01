@@ -10,26 +10,31 @@ const routes = [
     path: '/',
     exact: true,
     component: Login,
+    private: false,
   },
   {
     path: '/login',
     exact: true,
     component: Login,
+    private: false,
   },
   {
     path: '/register',
     exact: true,
     component: Register,
+    private: false,
   },
   {
     path: '/athlete',
     exact: true,
     component: Athlete,
+    private: true,
   },
   {
     path: '/stream',
     exact: true,
     component: Stream,
+    private: true,
   },
 ];
 
