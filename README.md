@@ -44,7 +44,7 @@ Features include:
 
 ## implementation
 
-As interest was requested, in regard to process of integration between
+As there was interest, in regard to process of integration between
 the front-end and the back-end, here is a brief, bulleted step-by-step:
 
 1. Prior to any "code" being written or UI created, data is modelled.
