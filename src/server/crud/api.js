@@ -9,21 +9,12 @@ const Api = {
     router.post('/api/v1/user', (ctx, next) => {
         ctx.body = userCRUD.create(ctx.request.body);
       })
-      .get('/api/v1/user', (ctx, next) => {
-        ctx.body = userCRUD.read(-1, true);
+      .post('/api/v1/user/login', (ctx, next) => {
+        ctx.body = userCRUD.createSession(ctx.request.body);
       })
-      .get('/api/v1/user/:id', (ctx, next) => {
-        const id = parseInt(ctx.params.id)
-        ctx.body = userCRUD.read(id);
+      .post('/api/v1/user/validate', (ctx, next) => {
+        ctx.body = userCRUD.extendSession(ctx.request.body);
       })
-      .put('/api/v1/user/:id', (ctx, next) => {
-        const id = parseInt(ctx.params.id)
-        ctx.body = userCRUD.update(id, ctx.request.body);
-      })
-      .del('/api/v1/user/:id', (ctx, next) => {
-        const id = parseInt(ctx.params.id)
-        ctx.body = userCRUD.destroy(id);
-      });
 
     // handle calorie-related API routes
     router.post('/api/v1/caloriesburned', (ctx, next) => {

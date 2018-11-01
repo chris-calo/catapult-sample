@@ -9,12 +9,14 @@ simplistic, video and health metrics.
 Features include:
 
 - [ ] Cross-browser, scalable UI
-- [ ] React for dev, with Preact used in production for performance
-- [ ] Full-stack app created in JS
-- [ ] No UI frameworks; written by hand in SCSS
+- [x] React for dev, with Preact used in production for performance
+- [x] Full-stack app created in JS
+- [x] No UI frameworks; written by hand in SCSS
+- [x] True, hand-rolled, cryptographically-secure user sessions
 - [x] Decoupled API on back-end in ES6+ with Koa
 - [x] Exhibits good programming practices in modern JavaScript
 - [x] 3 unique data structures, with flexible, custom graphing
+- [x] Image and framework-free visuals (branding excluded)
 - [x] Test suite (Jest) with near 100% coverage
 - [x] Minimal production dependencies
 - [x] Concise, modular codebase

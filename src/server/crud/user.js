@@ -1,4 +1,6 @@
+import uuid from 'uuid/v1';
 import bcrypt from 'bcrypt';
+import { dateFactory } from './data';
 import {
   isString,
   serverTimestamp,
@@ -20,6 +22,42 @@ const userOps = {
   data: [],
 
   // a forced parameter is included to ensure deterministic testing
+  createSession: (data, forced = null) => {
+    const email = data.email;
+    const emailIndex = userOps.data.findIndex(data =>
+      data.email === email
+    );
+
+    if (emailIndex < 0) {
+      return respondError(`User with email "${email}" does not exist`);
+    }
+
+    const temp = userOps.data[emailIndex]
+    const password = data.password;
+    if (!userOps.checkPassword(password, temp.hash)) {
+      return respondError(`Password invalid`);
+    }
+
+    temp.sessionExpires = expiresTime(forced);
+    temp.token = uuid();
+    userOps.data[emailIndex] = temp;
+
+    const result = deepCopyObj(userOps.data[emailIndex]);
+    delete result.firstName;
+    delete result.lastName;
+    delete result.hash;
+
+    return {
+      data: [
+        result,
+      ],
+      ok: true,
+      msg: `OK: extended session of user "${email}"`,
+      servertime: serverTimestamp(),
+    };
+  },
+
+  // a forced parameter is included to ensure deterministic testing
   extendSession: (data, forced = null) => {
     const email = data.email;
     const emailIndex = userOps.data.findIndex(data =>
@@ -31,12 +69,32 @@ const userOps = {
     }
 
     const temp = userOps.data[emailIndex]
+    const token = data.token;
+
+    if (
+      !token ||
+      !isString(token) ||
+      token.trim().length < 1 ||
+      token != temp.token
+    ) {
+      // clear existing session, as it expired
+      temp.sessionExpires = dateFactory(1);
+      temp.token = "";
+      userOps.data[emailIndex] = temp;
+      return respondError(`Unable to validate user authentication token`);
+    }
+
     temp.sessionExpires = expiresTime(forced);
     userOps.data[emailIndex] = temp;
 
+    const result = deepCopyObj(userOps.data[emailIndex]);
+    delete result.firstName;
+    delete result.lastName;
+    delete result.hash;
+
     return {
       data: [
-        userOps.data[emailIndex],
+        result,
       ],
       ok: true,
       msg: `OK: extended session of user "${email}"`,
@@ -116,7 +174,7 @@ const userOps = {
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
-      password: userOps.hashPassword(data.password),
+      hash: userOps.hashPassword(data.password),
       sessionExpires: expiresTime(),
     });
     const newID = len - 1;

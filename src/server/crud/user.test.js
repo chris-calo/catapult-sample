@@ -423,7 +423,7 @@ describe('userOps.create', () => {
   });
 });
 
-describe('userOps.extendSession', () => {
+describe('userOps.sessions', () => {
   it("should validate the input object", () => {
     const inputA = {
       email: "john.doe@email.com",
@@ -442,12 +442,12 @@ describe('userOps.extendSession', () => {
     const outputC = userOps.extendSession(inputC);
     const outputD = userOps.extendSession(inputD);
 
-    const msgA = `OK: extended session of user "${inputA.email}"`;
+    const msgA = `ERROR: Unable to validate user authentication token`;
     const msgB = `ERROR: User with email "null" does not exist`;
     const msgC = `ERROR: User with email "123" does not exist`;
     const msgD = `ERROR: User with email "undefined" does not exist`;
 
-    expect(outputA.ok).toBeTruthy();
+    expect(outputA.ok).toBeFalsy();
     expect(outputA.msg).toBe(msgA);
 
     expect(outputB.ok).toBeFalsy();
@@ -482,58 +482,63 @@ describe('userOps.extendSession', () => {
       firstName: "Jane",
       lastName: "Doe",
       email: "jdoe@gmail.com",
-      password: "abc123",
+      password: "def456",
       sessionExpires: timeInB,
     };
     const inputC = {
       firstName: "Chris",
       lastName: "Calo",
       email: "ccalo@vulcanca.com",
-      password: "abc123",
+      password: "321cba",
       sessionExpires: timeInC,
     };
     const inputD = {
       firstName: "Dan",
       lastName: "Renalds",
       email: "drenalds@vulcanca.com",
-      password: "abc123",
+      password: "654fed",
       sessionExpires: timeInD,
     };
 
     // ensure data exists
-    userOps.create(inputA);
-    userOps.create(inputB);
-    userOps.create(inputC);
-    userOps.create(inputD);
+    const tempUserA = userOps.create(inputA);
+    const tempUserB = userOps.create(inputB);
+    const tempUserC = userOps.create(inputC);
+    const tempUserD = userOps.create(inputD);
 
-    const outputA = userOps.extendSession(inputA, inputA.sessionExpires);
-    const outputB = userOps.extendSession(inputB, inputB.sessionExpires);
-    const outputC = userOps.extendSession(inputC, inputC.sessionExpires);
-    const outputD = userOps.extendSession(inputD, inputD.sessionExpires);
+    const sessionA = userOps.createSession(inputA).data[0];
+    const sessionB = userOps.createSession(inputB).data[0];
+    const sessionC = userOps.createSession(inputC).data[0];
+    const sessionD = userOps.createSession(inputD).data[0];
+
+    const outputA = userOps.extendSession(sessionA, inputA.sessionExpires);
+    const outputB = userOps.extendSession(sessionB, inputB.sessionExpires);
+    const outputC = userOps.extendSession(sessionC, inputC.sessionExpires);
+    const outputD = userOps.extendSession(sessionD, inputD.sessionExpires);
 
     const msgA = `OK: extended session of user "${inputA.email}"`;
     const msgB = `OK: extended session of user "${inputB.email}"`;
     const msgC = `OK: extended session of user "${inputC.email}"`;
     const msgD = `OK: extended session of user "${inputD.email}"`;
 
-    expect(outputA.ok).toBeTruthy();
     expect(outputA.msg).toBe(msgA);
-    expect(outputA.data[0].sessionExpires.getTime())
+    expect(outputA.ok).toBeTruthy();
+    expect((new Date(outputA.data[0].sessionExpires)).getTime())
     .toBe(timeOutA.getTime());
 
     expect(outputB.ok).toBeTruthy();
     expect(outputB.msg).toBe(msgB);
-    expect(outputB.data[0].sessionExpires.getTime())
+    expect((new Date(outputB.data[0].sessionExpires)).getTime())
     .toBe(timeOutB.getTime());
 
     expect(outputC.ok).toBeTruthy();
     expect(outputC.msg).toBe(msgC);
-    expect(outputC.data[0].sessionExpires.getTime())
+    expect((new Date(outputC.data[0].sessionExpires)).getTime())
     .toBe(timeOutC.getTime());
 
     expect(outputD.ok).toBeTruthy();
     expect(outputD.msg).toBe(msgD);
-    expect(outputD.data[0].sessionExpires.getTime())
+    expect((new Date(outputD.data[0].sessionExpires)).getTime())
     .toBe(timeOutD.getTime());
   });
 });
