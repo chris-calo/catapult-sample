@@ -42,7 +42,7 @@ Features include:
 λ npm test
 ```
 
-### license
+## license
 
 The source code and user-interface found here-in may not be reproduced in
 a commercial product, without written permission from Chris Calo. All
