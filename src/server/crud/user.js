@@ -9,38 +9,43 @@ import {
 
 const saltRounds = 10;
 
-const expiresTime = () => {
-  const base = new Date();
-  return base.setTime(base.getTime() + (2 * 60 * 60 * 1000)); // 2 hours
+const expiresTime = (input = null) => {
+  const base = input ?  (new Date(input.getTime())) : (new Date());
+
+  // add 2 hours; ensure returned to Date object
+  return new Date(base.setTime(base.getTime() + (2 * 60 * 60 * 1000)));
 };
 
 const userOps = {
   data: [],
 
-  extendSession: (data) => {
+  // a forced parameter is included to ensure deterministic testing
+  extendSession: (data, forced = null) => {
     const email = data.email;
-    const emailIndex = userData.data.findIndex(data =>
+    const emailIndex = userOps.data.findIndex(data =>
       data.email === email
     );
 
-    if (emailIndex > -1) {
+    if (emailIndex < 0) {
       return respondError(`User with email "${email}" does not exist`);
     }
 
-    userData.data[emailIndex].sessionExpires = expiresTime();
+    const temp = userOps.data[emailIndex]
+    temp.sessionExpires = expiresTime(forced);
+    userOps.data[emailIndex] = temp;
 
     return {
       data: [
-        userData.data[newID],
+        userOps.data[emailIndex],
       ],
       ok: true,
-      msg: `OK: extended session of user with email ${email}`,
+      msg: `OK: extended session of user "${email}"`,
       servertime: serverTimestamp(),
     };
   },
 
   hashPassword: (password) => {
-    const salt = bcrypt.getSaltSync(saltRounds);
+    const salt = bcrypt.genSaltSync(saltRounds);
     const hash = bcrypt.hashSync(password, salt);
     return hash;
   },
@@ -57,7 +62,7 @@ const userOps = {
     if (
       !('firstName' in data) ||
       data.firstName === null ||
-      isNaN(data.firstName)
+      !isString(data.firstName)
     ) {
       return respondError(`invalid 'firstName' value "${data.firstName}"`);
     }
@@ -65,7 +70,7 @@ const userOps = {
     if (
       !('lastName' in data) ||
       data.lastName === null ||
-      isNaN(data.lastName)
+      !isString(data.lastName)
     ) {
       return respondError(`invalid 'lastName' value "${data.lastName}"`);
     }
@@ -73,7 +78,7 @@ const userOps = {
     if (
       !('email' in data) ||
       data.email === null ||
-      isNaN(data.email)
+      !isString(data.email)
     ) {
       return respondError(`invalid 'email' value "${data.email}"`);
     }
@@ -81,7 +86,7 @@ const userOps = {
     if (
       !('password' in data) ||
       data.password === null ||
-      isNaN(data.password)
+      !isString(data.password)
     ) {
       return respondError(`invalid 'password' value "${data.password}"`);
     }
@@ -89,13 +94,13 @@ const userOps = {
     return { ok: true, msg: "OK: valid" };
   },
 
-  create: () => {
+  create: (data) => {
     const { ok, msg } = userOps.validate(data);
     if (!ok) { return respondError(msg); }
 
     // check if email value exists
     const email = data.email;
-    const emailIndex = userData.data.findIndex(data =>
+    const emailIndex = userOps.data.findIndex(data =>
       data.email === email
     );
 
@@ -107,7 +112,7 @@ const userOps = {
     }
 
     // if non-existent, insert
-    const len = userData.data.push({
+    const len = userOps.data.push({
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
@@ -119,14 +124,14 @@ const userOps = {
     // respond with new value information and OK status
     return {
       data: [
-        userData.data[newID],
+        userOps.data[newID],
       ],
       ok: true,
-      msg: `OK: inserted row with email ${email}`,
+      msg: `OK: inserted row with email "${email}"`,
       servertime: serverTimestamp(),
     };
   },
 };
 
 export default userOps;
-export { userOps };
+export { expiresTime, userOps };
