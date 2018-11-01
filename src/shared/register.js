@@ -3,52 +3,33 @@ import { Link } from 'react-router-dom';
 import './register.scss';
 
 class Register extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.flash = React.createRef();
-    this.flashMessage = React.createRef();
-    this.registerForm = React.createRef();
-
-    this.firstNameField = React.createRef();
-    this.lastNameField = React.createRef();
-    this.emailField = React.createRef();
-    this.passwordField = React.createRef();
-  }
-
   componentDidMount() {
-    if (__isBrowser__) {
-      if (window.__REGISTER_SUCCESS__) {
-        this.showFlash("Success! You may on login", 'success');
-        window.__REGISTER_SUCCESS__ = null;
-        return;
-      }
-    }
+    this.hideFlash();
   }
 
   hideFlash() {
-    this.flash.current.classList.remove('error');
-    this.flash.current.classList.remove('warn');
-    this.flash.current.classList.remove('error');
-    this.flash.current.classList.add('hidden');
+    this.flash.classList.remove('error');
+    this.flash.classList.remove('warn');
+    this.flash.classList.remove('error');
+    this.flash.classList.add('hidden');
   }
 
   showFlash(message = "", style = "error") {
-    this.flashMessage.current.innerHTML = message;
-    this.flash.current.classList.remove('error');
-    this.flash.current.classList.remove('warn');
-    this.flash.current.classList.remove('error');
-    this.flash.current.classList.remove('hidden');
-    this.flash.current.classList.add(style);
+    this.flashMessage.innerHTML = message;
+    this.flash.classList.remove('error');
+    this.flash.classList.remove('warn');
+    this.flash.classList.remove('error');
+    this.flash.classList.remove('hidden');
+    this.flash.classList.add(style);
   }
 
   handleSubmit(e) {
     e.preventDefault();
 
-    const firstName = this.firstNameField.current.value.trim();
-    const lastName = this.lastNameField.current.value.trim();
-    const email = this.emailField.current.value.trim();
-    const password = this.passwordField.current.value.trim();
+    const firstName = this.firstNameField.value.trim();
+    const lastName = this.lastNameField.value.trim();
+    const email = this.emailField.value.trim();
+    const password = this.passwordField.value.trim();
 
     if (firstName.length < 1) {
       this.showFlash("Weird… you must have a name!", 'error');
@@ -67,6 +48,13 @@ class Register extends React.Component {
       this.showFlash("Hey, we need a password!", 'error');
       return;
     }
+
+    const inputData = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+    };
   }
 
   render() {
@@ -75,34 +63,35 @@ class Register extends React.Component {
         <div className="view-container">
           <Link to="/" className="logo" />
           <form action="/api/v1/users/register" method="POST"
-          ref={this.registerForm} onSubmit={(e) => this.handleSubmit(e)}>
+          ref={el => this.registerForm = el}
+          onSubmit={(e) => this.handleSubmit(e)}>
             <div className="field-pair">
               <div className="field">
                 <label>First Name</label>
                 <input type="text" name="first-name"
-                placeholder="Jane" ref={this.firstNameField} />
+                placeholder="Jane" ref={el => this.firstNameField = el} />
               </div>
 
               <div className="field">
                 <label>Last Name</label>
                 <input type="text" name="last-name"
-                placeholder="Doe" ref={this.lastNameField} />
+                placeholder="Doe" ref={el => this.lastNameField = el} />
               </div>
             </div>
 
             <label>Email</label>
             <input type="text" name="email"
             placeholder="jdoe@catapultsports.com"
-            ref={this.emailField} />
+            ref={el => this.emailField = el} />
 
             <label>Password</label>
             <input type="password" name="password"
             placeholder="•••••••••••••••"
-           ref={this.passwordField} />
+           ref={el => this.passwordField = el} />
 
-            <div className="flash hidden" ref={this.flash}>
+            <div className="flash hidden" ref={el => this.flash = el}>
               <span className="attention">!</span>
-              <span className="message" ref={this.flashMessage}></span>
+              <span className="message" ref={el => this.flashMessage = el} />
             </div>
 
             <input type="submit" value="Get Started!" />

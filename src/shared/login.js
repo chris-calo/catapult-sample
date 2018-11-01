@@ -1,22 +1,14 @@
 import React from 'react';
 import emailValidator from 'email-validator';
 import { Link } from 'react-router-dom';
+import { get } from './common/api';
 import './login.scss';
 
 // TODO: make flash a class and state-machine for ease of modification
 class Login extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.flash = React.createRef();
-    this.flashMessage = React.createRef();
-    this.registerForm = React.createRef();
-
-    this.emailField = React.createRef();
-    this.passwordField = React.createRef();
-  }
-
   componentDidMount() {
+    this.hideFlash();
+
     if (__isBrowser__) {
       if (window.__REGISTER_SUCCESS__) {
         this.showFlash("Success! You may on login", 'success');
@@ -27,26 +19,26 @@ class Login extends React.Component {
   }
 
   hideFlash() {
-    this.flash.current.classList.remove('error');
-    this.flash.current.classList.remove('warn');
-    this.flash.current.classList.remove('error');
-    this.flash.current.classList.add('hidden');
+    this.flash.classList.remove('error');
+    this.flash.classList.remove('warn');
+    this.flash.classList.remove('error');
+    this.flash.classList.add('hidden');
   }
 
   showFlash(message = "", style = "error") {
-    this.flashMessage.current.innerHTML = message;
-    this.flash.current.classList.remove('error');
-    this.flash.current.classList.remove('warn');
-    this.flash.current.classList.remove('error');
-    this.flash.current.classList.remove('hidden');
-    this.flash.current.classList.add(style);
+    this.flashMessage.innerHTML = message;
+    this.flash.classList.remove('error');
+    this.flash.classList.remove('warn');
+    this.flash.classList.remove('error');
+    this.flash.classList.remove('hidden');
+    this.flash.classList.add(style);
   }
 
   handleSubmit(e) {
     e.preventDefault();
 
-    const email = this.emailField.current.value.trim();
-    const password = this.passwordField.current.value.trim();
+    const email = this.emailField.value.trim();
+    const password = this.passwordField.value.trim();
 
     if (email.length < 1 || !/\S+@\S+/.test(email)) {
       this.showFlash("Hmm… that email seems off", 'error');
@@ -57,6 +49,10 @@ class Login extends React.Component {
       this.showFlash("Uh-oh, you need password!", 'error');
       return;
     }
+
+    get('/api/v1/caloriesburned').then(result => {
+      console.log(JSON.stringify(result));
+    });
   }
 
   render() {
@@ -70,21 +66,22 @@ class Login extends React.Component {
               It&rsquo;s free!
             </Link>
           </div>
-          <div className="flash hidden" ref={this.flash}>
+          <div className="flash hidden" ref={el => this.flash = el}>
             <span className="attention">!</span>
-            <span className="message" ref={this.flashMessage}></span>
+            <span className="message" ref={el => this.flashMessage = el} />
           </div>
           <form action="/api/v1/users/login" method="POST"
-          ref={this.loginForm} onSubmit={(e) => this.handleSubmit(e)}>
+          ref={el => this.loginForm = el}
+          onSubmit={(e) => this.handleSubmit(e)}>
             <label>Email</label>
             <input type="text" name="email"
             placeholder="user@catapultsports.com"
-            ref={this.emailField} />
+            ref={el => this.emailField = el} />
 
             <label>Password</label>
             <input type="password" name="password"
             placeholder="•••••••••••••••"
-            ref={this.passwordField} />
+            ref={el => this.passwordField = el} />
 
             <input type="submit" value="Log In" />
           </form>
